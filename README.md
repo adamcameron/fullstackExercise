@@ -1,2 +1,2 @@
 # fullstackExercise
-Creating a web site with Vue.js, Nginx, DMZed Symfony on PHP8 &amp; MySQL running in Docker containers
+Creating a web site with Vue.js, Nginx, Symfony on PHP8 &amp; MariaDB running in Docker containers
