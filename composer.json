@@ -1,0 +1,16 @@
+{
+    "name": "adamcameron/full-stack-exercise",
+    "description": "Full Stack Exercise",
+    "license": "GPL-3.0-or-later",
+    "require-dev" :{
+        "phpunit/phpunit" : "^9.5"
+    },
+    "autoload" : {
+        "psr-4": {
+            "adamCameron\\fullStackExercise\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "adamCameron\\fullStackExercise\\test\\" : "test/"
+    }
+}
