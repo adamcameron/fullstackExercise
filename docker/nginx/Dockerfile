@@ -1,4 +1,4 @@
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/
-CMD ["nginx-debug"]
+CMD ["nginx"]
 EXPOSE 80
