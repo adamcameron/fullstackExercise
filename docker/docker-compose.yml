@@ -10,17 +10,26 @@ services:
       - ./nginx/sites/:/etc/nginx/sites-available
       - ./nginx/conf.d/:/etc/nginx/conf.d
       - ../log:/var/log
-    depends_on:
-      - php-fpm
     ports:
       - "80:80"
     stdin_open: true # docker run -i
     tty: true        # docker run -t
+    networks:
+      backend:
+        aliases:
+          - webserver.backend
 
   php-fpm:
     build:
       context: ./php-fpm
     volumes:
       - ..:/usr/share/fullstackExercise
+      - ./php-fpm/.bash_history:$HOME/.bash_history
     stdin_open: true # docker run -i
     tty: true        # docker run -t
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: "bridge"
