@@ -2,4 +2,3 @@
 /log
 /vendor
 /public/test-coverage-report
-/docker/php-fpm/.bash_history

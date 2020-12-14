@@ -24,7 +24,7 @@ services:
       context: ./php-fpm
     volumes:
       - ..:/usr/share/fullstackExercise
-      - ./php-fpm/.bash_history:/root/.bash_history
+      - ./php-fpm/root_home:/root
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     networks:
