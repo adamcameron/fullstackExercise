@@ -22,6 +22,8 @@ services:
   php-fpm:
     build:
       context: ./php-fpm
+    environment:
+      - DATABASE_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     volumes:
       - ..:/usr/share/fullstackExercise
       - ./php-fpm/root_home:/root
@@ -29,6 +31,22 @@ services:
     tty: true        # docker run -t
     networks:
       - backend
+
+  mariadb:
+    build:
+      context: ./mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb/data:/var/lib/mysql
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    networks:
+      backend:
+        aliases:
+          - database.backend
 
 networks:
   backend:
