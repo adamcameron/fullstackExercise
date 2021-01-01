@@ -1,6 +1,6 @@
 <?php
 
-namespace adamCameron\fullStackExercise\test\unit;
+namespace adamCameron\fullStackExercise\tests\unit;
 
 use adamCameron\fullStackExercise\MyClass;
 use PHPUnit\Framework\TestCase;

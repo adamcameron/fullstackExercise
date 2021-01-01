@@ -1,6 +1,6 @@
 <?php
 
-namespace adamCameron\fullStackExercise\test\integration;
+namespace adamCameron\fullStackExercise\tests\integration;
 
 use PHPUnit\Framework\TestCase;
 use \PDO;

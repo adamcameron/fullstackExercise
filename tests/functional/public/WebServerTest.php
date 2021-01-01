@@ -1,6 +1,6 @@
 <?php
 
-namespace adamCameron\fullStackExercise\test\functional\public;
+namespace adamCameron\fullStackExercise\tests\functional\public;
 
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
