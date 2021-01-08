@@ -44,7 +44,7 @@ class SymfonyTest extends TestCase
 
 
     /** @coversNothing */
-    public function xtestGreetingsEndPointReturnsPersonalisedGreeting()
+    public function testGreetingsEndPointReturnsPersonalisedGreeting()
     {
         $testName = 'Zachary';
         $expectedGreeting = (object) [
@@ -57,7 +57,7 @@ class SymfonyTest extends TestCase
         ]);
 
         $response = $client->get(
-            "greetings/$testName/",
+            "greetings/$testName",
             ['http_errors' => false]
         );
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());

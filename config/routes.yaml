@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+greetings:
+  path: /greetings/{name}
+  controller: adamCameron\fullStackExercise\Controller\GreetingsController::doGet
