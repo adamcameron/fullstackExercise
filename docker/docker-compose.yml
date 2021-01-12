@@ -27,8 +27,8 @@ services:
     volumes:
       - ..:/usr/share/fullstackExercise
       - ./php-fpm/root_home:/root
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
+    stdin_open: true
+    tty: true
     networks:
       - backend
 
@@ -41,12 +41,22 @@ services:
       - "3306:3306"
     volumes:
       - ./mariadb/data:/var/lib/mysql
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
+    stdin_open: true
+    tty: true
     networks:
       backend:
         aliases:
           - database.backend
+  node:
+    build:
+      context: ./node
+    volumes:
+      - ..:/usr/share/fullstackExercise
+      - ./node/root_home:/root
+    stdin_open: true
+    tty: true
+    networks:
+      - backend
 
 networks:
   backend:

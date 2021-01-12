@@ -1,6 +1,7 @@
 /.idea/
 /log/
 /public/test-coverage-report/
+/node_modules/
 
 ###> symfony/framework-bundle ###
 /.env.local
