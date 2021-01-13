@@ -3,25 +3,21 @@ let puppeteer = require('puppeteer');
 let chai = require("chai");
 let chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
+let should = chai.should();
 
 describe("Baseline test of vue.js working", function () {
     let browser;
     let page;
-
-    let should = chai.should();
 
     this.timeout(5000);
 
     const expectedText = "G'day world via Vue";
 
     before (async function () {
-        browser = await puppeteer.launch( { headless: true, args: ["--no-sandbox"]});
+        browser = await puppeteer.launch( {args: ["--no-sandbox"]});
         page = await browser.newPage();
 
-        await Promise.all([
-            page.goto("http://webserver.backend/gdayWorldViaVue.html"),
-            page.waitForNavigation()
-        ]);
+        await page.goto("http://webserver.backend/gdayWorldViaVue.html");
     });
 
     after (async function () {
