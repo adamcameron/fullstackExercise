@@ -9,18 +9,18 @@ describe("Baseline test of vue.js working", function () {
     let browser;
     let page;
 
-    this.timeout(5000);
-
     const expectedText = "G'day world via Vue";
 
-    before (async function () {
+    before("Load the test document", async function () {
+        this.timeout(5000);
+
         browser = await puppeteer.launch( {args: ["--no-sandbox"]});
         page = await browser.newPage();
 
         await page.goto("http://webserver.backend/gdayWorldViaVue.html");
     });
 
-    after (async function () {
+    after("Close down the browser", async function () {
         await page.close();
         await browser.close();
     });
