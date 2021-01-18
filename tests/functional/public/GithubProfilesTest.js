@@ -25,8 +25,8 @@ const testVariants = [
 let browser;
 let page;
 
-testVariants.forEach(function (variant) {
-    describe.only(variant.describe, function () {
+testVariants.forEach(async function (variant) {
+    await describe.only(variant.describe, function () {
         let expectedUserData;
 
         before("Load the page", async function () {
@@ -41,42 +41,42 @@ testVariants.forEach(function (variant) {
         });
 
         it("should have the expected person's name", async function () {
-            let name = page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText);
-            name.should.eventually.equal(expectedUserData.name);
+            let name = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText)
+            name.should.equal(expectedUserData.name);
         });
 
         it("should have the expected person's github page URL", async function () {
-            let linkHref = page.$eval("#app>.card>.content>.header", headerElement => headerElement.href);
-            linkHref.should.eventually.equal(expectedUserData.pageUrl);
+            let linkHref = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.href);
+            linkHref.should.equal(expectedUserData.pageUrl);
         });
 
         it("should have the expected person's avatar", async function () {
-            let avatar = page.$eval("#app>.card>.image>img", avatarElement => avatarElement.src);
-            avatar.should.eventually.equal(expectedUserData.avatar);
+            let avatar = await page.$eval("#app>.card>.image>img", avatarElement => avatarElement.src);
+            avatar.should.equal(expectedUserData.avatar);
         });
 
         it("should have the expected person's joining year", async function () {
             const yearPattern = new RegExp(`.*${expectedUserData.joinedYear}.*`);
 
-            let joiningMessage = page.$eval("#app>.card>.content>.meta>.date", joiningElement => joiningElement.innerText);
-            joiningMessage.should.eventually.match(yearPattern);
+            let joiningMessage = await page.$eval("#app>.card>.content>.meta>.date", joiningElement => joiningElement.innerText);
+            joiningMessage.should.match(yearPattern);
         });
 
         it("should have the expected person's description", async function () {
-            let description = page.$eval("#app>.card>.content>.description", descriptionElement => descriptionElement.innerText);
-            description.should.eventually.equal(expectedUserData.description);
+            let description = await page.$eval("#app>.card>.content>.description", descriptionElement => descriptionElement.innerText);
+            description.should.equal(expectedUserData.description);
         });
 
         it("should have the expected person's number of friends", async function () {
             const friendsPattern = new RegExp(`.*${expectedUserData.friends}.*`);
 
-            let friendsText = page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.innerText);
-            friendsText.should.eventually.match(friendsPattern);
+            let friendsText = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.innerText);
+            friendsText.should.match(friendsPattern);
         });
 
         it("should have the expected person's friends URL", async function () {
-            let linkHref = page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.href);
-            linkHref.should.eventually.equal(expectedUserData.pageUrl + "?tab=followers");
+            let linkHref = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.href);
+            linkHref.should.equal(expectedUserData.pageUrl + "?tab=followers");
         });
     });
 });
@@ -91,9 +91,13 @@ async function loadTestPage(username, githubApiUser) {
     page = await browser.newPage();
 
     await Promise.all([
+        page.on("console", message => {
+            if (message.type() === 'info') return;
+            console.log(`pageConsoleMessage: [${message.text()}]`)
+        }),
         page.goto(url),
-        page.waitForNavigation()
-    ]);
+        page.waitForNavigation({waitUntil: "networkidle0"})
+    ]).catch(error => console.log(error));
 }
 
 async function unloadTestPage() {
