@@ -1,0 +1,40 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+</head>
+<body>
+<div id="app" class="ui container">
+    <h1>GitHub Profiles</h1>
+    <github-user-card default-user-name="adamcameron"/>
+</div>
+
+<script type="text/x-template" id="github-user-card-template">
+    <div class="ui card">
+        <div class="image">
+            <img :src="avatar">
+        </div>
+        <div class="content">
+            <a class="header" :href="pageUrl">{{name}}</a>
+            <div class="meta">
+                <span class="date">Joined in {{joinedYear}}</span>
+            </div>
+            <div class="description">
+                {{description}}
+            </div>
+        </div>
+        <div class="extra content">
+            <a :href="friendsPageUrl">
+                <i class="user icon"></i>
+                {{friends}} Friends
+            </a>
+        </div>
+    </div>
+</script>
+
+<!-- Import Vue.js and axios -->
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script src="assets/scripts/githubProfiles.js"></script>
+</body>
+</html>

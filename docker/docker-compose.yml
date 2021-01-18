@@ -50,6 +50,8 @@ services:
   node:
     build:
       context: ./node
+    environment:
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     volumes:
       - ..:/usr/share/fullstackExercise
       - ./node/root_home:/root

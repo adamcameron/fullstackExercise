@@ -6,11 +6,15 @@
   "directories": {
     "test": "tests"
   },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-match": "^1.1.1",
     "mocha": "^8.2.1",
-    "puppeteer": "^5.5.0",
-    "chai-as-promised": "^7.1.1"
+    "puppeteer": "^5.5.0"
   },
   "scripts": {
     "test": "mocha tests/**/*.js"
