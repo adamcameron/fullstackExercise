@@ -20,20 +20,15 @@ let githubUserCardComponent = {
         };
     },
     created () {
-        console.log("BEFORE axios.get");
         axios.get(
             `https://api.github.com/users/${this.username}`,
             {
                 auth: {
                     username: this.githubApiUser
-                },
-                validateStatus: function(status) {
-                    return status >= 200 && status < 300;
                 }
             }
         )
         .then(response => {
-            console.log("IN then");
             this.name = response.data.name;
             this.pageUrl = response.data.html_url;
             this.avatar = response.data.avatar_url;
@@ -41,13 +36,7 @@ let githubUserCardComponent = {
             this.description = response.data.bio ?? "";
             this.friends = response.data.followers;
             this.friendsPageUrl = response.data.html_url + "?tab=followers";
-
-            console.log(`USERNAME: [${this.username}]; DATA: [${this.name}][${this.pageUrl}]`);
-        })
-        .catch(error => {
-            console.log(error);
         });
-        console.log("AFTER axios.get");
     }
 };
 

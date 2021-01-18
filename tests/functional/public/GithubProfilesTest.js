@@ -25,12 +25,12 @@ const testVariants = [
 let browser;
 let page;
 
-testVariants.forEach(async function (variant) {
-    await describe.only(variant.describe, function () {
+testVariants.forEach(function (variant) {
+    describe.only(variant.describe, function () {
         let expectedUserData;
 
         before("Load the page", async function () {
-            this.timeout(5000);
+            this.timeout(10000);
 
             await loadTestPage(variant.username, githubApiUser);
             expectedUserData = await loadTestUserFromGithub(variant.username, githubApiUser);
@@ -91,13 +91,9 @@ async function loadTestPage(username, githubApiUser) {
     page = await browser.newPage();
 
     await Promise.all([
-        page.on("console", message => {
-            if (message.type() === 'info') return;
-            console.log(`pageConsoleMessage: [${message.text()}]`)
-        }),
         page.goto(url),
         page.waitForNavigation({waitUntil: "networkidle0"})
-    ]).catch(error => console.log(error));
+    ]);
 }
 
 async function unloadTestPage() {
