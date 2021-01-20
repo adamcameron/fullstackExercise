@@ -1,127 +1,106 @@
+let https = require("https");
+
 let puppeteer = require("puppeteer");
 
 let chai = require("chai");
-let chaiAsPromised = require("chai-as-promised");
-chai.use(chaiAsPromised);
-chai.use(require("chai-match"));
+chai.use(require("chai-string"));
 let should = chai.should();
 
-let axios = require("axios");
+describe.only("Tests of githubProfiles page using github data", function () {
+    let browser;
+    let page;
+    let expectedUserData;
 
-const defaultUserName = "adamcameron";
-const githubApiUser = getGithubApiUser();
+    before("Load the page", async function () {
+        this.timeout(10000);
 
-const testVariants = [
-    {
-        describe : "Tests of githubProfiles page using default username",
-        username : defaultUserName
-    },
-    {
-        describe : "Tests of githubProfiles page using username override from URL",
-        username : "hootlex"
-    }
-];
-
-let browser;
-let page;
-
-testVariants.forEach(function (variant) {
-    describe.only(variant.describe, function () {
-        let expectedUserData;
-
-        before("Load the page", async function () {
-            this.timeout(10000);
-
-            await loadTestPage(variant.username, githubApiUser);
-            expectedUserData = await loadTestUserFromGithub(variant.username, githubApiUser);
-        });
-
-        after("Close down the browser", async function () {
-            await unloadTestPage();
-        });
-
-        it("should have the expected person's name", async function () {
-            let name = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText)
-            name.should.equal(expectedUserData.name);
-        });
-
-        it("should have the expected person's github page URL", async function () {
-            let linkHref = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.href);
-            linkHref.should.equal(expectedUserData.pageUrl);
-        });
-
-        it("should have the expected person's avatar", async function () {
-            let avatar = await page.$eval("#app>.card>.image>img", avatarElement => avatarElement.src);
-            avatar.should.equal(expectedUserData.avatar);
-        });
-
-        it("should have the expected person's joining year", async function () {
-            const yearPattern = new RegExp(`.*${expectedUserData.joinedYear}.*`);
-
-            let joiningMessage = await page.$eval("#app>.card>.content>.meta>.date", joiningElement => joiningElement.innerText);
-            joiningMessage.should.match(yearPattern);
-        });
-
-        it("should have the expected person's description", async function () {
-            let description = await page.$eval("#app>.card>.content>.description", descriptionElement => descriptionElement.innerText);
-            description.should.equal(expectedUserData.description);
-        });
-
-        it("should have the expected person's number of friends", async function () {
-            const friendsPattern = new RegExp(`.*${expectedUserData.friends}.*`);
-
-            let friendsText = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.innerText);
-            friendsText.should.match(friendsPattern);
-        });
-
-        it("should have the expected person's friends URL", async function () {
-            let linkHref = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.href);
-            linkHref.should.equal(expectedUserData.pageUrl + "?tab=followers");
-        });
+        await loadTestPage();
+        expectedUserData = await loadTestUserFromGithub();
     });
-});
 
-async function loadTestPage(username, githubApiUser) {
-    let url = `http://webserver.backend/githubProfiles.html?GITHUB_PERSONAL_ACCESS_TOKEN=${githubApiUser}`;
-    if (username !== defaultUserName) {
-        url += `&username=${username}`;
+    after("Close down the browser", async function () {
+        await page.close();
+        await browser.close();
+    });
+
+    it("should have the expected person's name", async function () {
+        let name = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText)
+        name.should.equal(expectedUserData.name);
+    });
+
+    it("should have the expected person's github page URL", async function () {
+        let linkHref = await page.$eval("#app>.card>.content>a.header", headerElement => headerElement.href);
+        linkHref.should.equal(expectedUserData.pageUrl);
+    });
+
+    it("should have the expected person's avatar", async function () {
+        let avatar = await page.$eval("#app>.card>.image>img", avatarElement => avatarElement.src);
+        avatar.should.equal(expectedUserData.avatar);
+    });
+
+    it("should have the expected person's joining year", async function () {
+        const expectedJoiningMessage = `Joined in ${expectedUserData.joinedYear}`;
+
+        let joiningMessage = await page.$eval("#app>.card>.content>.meta>.date", joiningElement => joiningElement.innerText);
+        joiningMessage.should.equal(expectedJoiningMessage);
+    });
+
+    it("should have the expected person's description", async function () {
+        let description = await page.$eval("#app>.card>.content>.description", descriptionElement => descriptionElement.innerText);
+        description.should.equal(expectedUserData.description);
+    });
+
+    it("should have the expected person's number of friends", async function () {
+        const expectedFriendsMessage = `${expectedUserData.friends} Friends`;
+
+        let friendsText = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.innerText);
+        friendsText.should.containIgnoreSpaces(expectedFriendsMessage);
+    });
+
+    it("should have the expected person's friends URL", async function () {
+        let linkHref = await page.$eval("#app>.card>.extra.content>a", extraContentAnchorElement => extraContentAnchorElement.href);
+        linkHref.should.equal(expectedUserData.friendsPageUrl);
+    });
+
+    let loadTestPage = async function () {
+        browser = await puppeteer.launch( {args: ["--no-sandbox"]});
+        page = await browser.newPage();
+
+        await Promise.all([
+            page.goto("http://webserver.backend/githubProfiles.html"),
+            page.waitForNavigation({waitUntil: "networkidle0"})
+        ]);
     }
 
-    browser = await puppeteer.launch( {args: ["--no-sandbox"]});
-    page = await browser.newPage();
+    let loadTestUserFromGithub = async function () {
+        let githubUserData = await new Promise((resolve, reject) => {
+            let request = https.get(
+                "https://api.github.com/users/hootlex",
+                    {
+                        auth: `username: ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`,
+                        headers: {'user-agent': 'node.js'}
+                    }, response => {
+                    let rawResponseData = "";
 
-    await Promise.all([
-        page.goto(url),
-        page.waitForNavigation({waitUntil: "networkidle0"})
-    ]);
-}
-
-async function unloadTestPage() {
-    await page.close();
-    await browser.close();
-}
-
-async function loadTestUserFromGithub(username, githubApiUser){
-    return await axios.get(
-        `https://api.github.com/users/${username}`,
-        {
-            auth: {
-                username: githubApiUser
-            }
-        })
-        .then(response => {
-            return {
-                name : response.data.name,
-                pageUrl : response.data.html_url,
-                avatar : response.data.avatar_url,
-                joinedYear : new Date(response.data.created_at).getFullYear(),
-                description : response.data.bio ?? "",
-                friends : response.data.followers,
-                friendsPageUrl: response.data.html_url + "?tab=followers"
-            };
+                    response.on("data", data => {
+                        rawResponseData += data;
+                    }).on("end", () => {
+                        resolve(JSON.parse(rawResponseData));
+                    }).on("error", error => {
+                        reject(error.message);
+                    });
+                }
+            );
+            request.end();
         });
-}
-
-function getGithubApiUser() {
-    return process.env.GITHUB_PERSONAL_ACCESS_TOKEN;
-}
+        return {
+            name : githubUserData.name,
+            pageUrl : githubUserData.html_url,
+            avatar : githubUserData.avatar_url,
+            joinedYear : new Date(githubUserData.created_at).getFullYear(),
+            description : githubUserData.bio ?? "",
+            friends : githubUserData.followers,
+            friendsPageUrl: githubUserData.html_url + "?tab=followers"
+        };
+    }
+});
