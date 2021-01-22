@@ -1,6 +1,6 @@
 Vue.component("click-counter", {
     template: '<button @click="count++">{{count}}</button>',
-    data() {
+    data () {
         return {count : 0};
     }
 });

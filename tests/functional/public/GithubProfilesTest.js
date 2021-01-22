@@ -24,7 +24,7 @@ describe("Tests of githubProfiles page using github data", function () {
     });
 
     it("should have the expected person's name", async function () {
-        let name = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText)
+        let name = await page.$eval("#app>.card>.content>.header", headerElement => headerElement.innerText);
         name.should.equal(expectedUserData.name);
     });
 

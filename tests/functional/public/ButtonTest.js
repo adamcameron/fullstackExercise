@@ -26,7 +26,6 @@ describe("Baseline tests of click-counter component", function () {
         await browser.close();
     });
 
-
     it("should start with a counter of zero", async function () {
         await page.reload();
 

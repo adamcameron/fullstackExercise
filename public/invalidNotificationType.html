@@ -1,0 +1,25 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+</head>
+<body>
+<div id="app" class="ui container">
+    <h1>Notification Center</h1>
+
+    <notification-message type="BAD_VALUE" />
+</div>
+
+<!-- Template for Notification Message -->
+<script type="text/x-template" id="notification-message-template">
+    <!-- Types: info, warning, error, success -->
+    <div class="ui message" :class="type" v-show="visible">
+        <i class="close icon" @click="hideNotification"></i>
+        <div class="header">{{header}}</div>
+        <slot/>
+    </div>
+</script>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="assets/scripts/notification.js"></script>
+</body>
+</html>
