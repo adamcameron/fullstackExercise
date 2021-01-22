@@ -6,7 +6,7 @@ let chai = require("chai");
 chai.use(require("chai-string"));
 let should = chai.should();
 
-describe.only("Tests of githubProfiles page using github data", function () {
+describe("Tests of githubProfiles page using github data", function () {
     let browser;
     let page;
     let expectedUserData;

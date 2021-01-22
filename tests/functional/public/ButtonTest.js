@@ -15,7 +15,10 @@ describe("Baseline tests of click-counter component", function () {
         browser = await puppeteer.launch( {args: ["--no-sandbox"]});
         page = await browser.newPage();
 
-        await page.goto("http://webserver.backend/button.html");
+        await Promise.all([
+            page.goto("http://webserver.backend/button.html"),
+            page.waitForNavigation()
+        ]);
     });
 
     after("Close down the browser", async function () {

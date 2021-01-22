@@ -50,4 +50,3 @@ new Vue({
         "github-user-card" : githubUserCardComponent
     }
 });
-
