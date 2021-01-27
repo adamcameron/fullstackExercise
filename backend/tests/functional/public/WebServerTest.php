@@ -11,7 +11,7 @@ class WebServerTest extends TestCase
     /** @coversNothing */
     public function testGdayWorldHtmlReturnsExpectedContent()
     {
-        $expectedContent = "G'day world";
+        $expectedContent = "G'day world!";
 
 
         $client = new Client([

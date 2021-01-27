@@ -21,6 +21,6 @@ class PhpTest extends TestCase
 
         $content = $response->getBody()->getContents();
 
-        $this->assertSame("G'day world", $content);
+        $this->assertSame("G'day world!", $content);
     }
 }

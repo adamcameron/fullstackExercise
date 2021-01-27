@@ -5,8 +5,8 @@ services:
     build:
       context: ./nginx
     volumes:
-      - ../frontend/public:/usr/share/fullstackExercise/frontend/public
-      - ../public:/usr/share/fullstackExercise/public
+      - ../frontend/public:/usr/share/nginx/html/frontend
+      - ../backend/public:/usr/share/nginx/html/backend
       - ../log:/var/log
     ports:
       - "80:80"
@@ -26,7 +26,10 @@ services:
     environment:
       - DATABASE_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     volumes:
-      - ..:/usr/share/fullstackExercise
+      - ../backend/config:/usr/share/fullstackExercise/config
+      - ../backend/public:/usr/share/fullstackExercise/public
+      - ../backend/src:/usr/share/fullstackExercise/src
+      - ../backend/tests:/usr/share/fullstackExercise/tests
       - ./php-fpm/root_home:/root
     stdin_open: true
     tty: true
