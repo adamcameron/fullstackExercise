@@ -5,13 +5,14 @@ services:
     build:
       context: ./nginx
     volumes:
+      - ../frontend/public:/usr/share/fullstackExercise/frontend/public
       - ../public:/usr/share/fullstackExercise/public
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/sites/:/etc/nginx/sites-available
-      - ./nginx/conf.d/:/etc/nginx/conf.d
       - ../log:/var/log
     ports:
       - "80:80"
+    extra_hosts:
+      - "fullstackexercise.backend:127.0.0.1"
+      - "fullstackexercise.frontend:127.0.0.1"
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     networks:
@@ -53,12 +54,16 @@ services:
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     volumes:
-      - ..:/usr/share/fullstackExercise
+      - ../frontend/public:/usr/share/fullstackExercise/public
+      - ../frontend/src:/usr/share/fullstackExercise/src
+      - ../frontend/test:/usr/share/fullstackExercise/test
       - ./node/root_home:/root
     stdin_open: true
     tty: true
     networks:
-      - backend
+      backend:
+        aliases:
+          - vuejs.backend
 
 networks:
   backend:
