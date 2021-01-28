@@ -41,10 +41,10 @@ describe("Tests for Date methods functions", function () {
 
     describe("Tests Date.daysBetween method", function () {
         let testCases = [
-            {it:"returns -1 if d1 is day before d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-16"), expectedResult: -1},
-            {it:"returns 1 if d1 is day after d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-14"), expectedResult: 1},
-            {it:"returns 0 if d1 is the same d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-15"), expectedResult: 0},
-            {it:"returns 0 if d1 is the same d2 except for the time part", d1: new Date("2021-01-15 00:00:00.0"), d2:new Date("2021-01-15 00:00:00.1"), expectedResult: 0}
+            {it:"returns -1 if d1 is the day before d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-16"), expectedResult: -1},
+            {it:"returns 1 if d1 is the day after d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-14"), expectedResult: 1},
+            {it:"returns 0 if d1 is the same day as d2", d1: new Date("2021-01-15"), d2:new Date("2021-01-15"), expectedResult: 0},
+            {it:"returns 0 if d1 is the same day as d2 except for the time part", d1: new Date("2021-01-15 00:00:00.0"), d2:new Date("2021-01-15 00:00:00.1"), expectedResult: 0}
         ];
         testCases.forEach(function (testCase) {
             it (testCase.it, function(){
