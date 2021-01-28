@@ -132,6 +132,21 @@ describe("Tests a method Reading.getEstimatesFromReadingsArray that returns an a
 
             actualEstimates.should.eql(expectedEstimates);
         });
+
+        it("should return an empty array if all readings are on the last day of the month", function () {
+            let readings = [
+                new Reading(100, "2021-04-30"),
+                new Reading(500, "2021-05-31"),
+                new Reading(1000, "2021-06-30"),
+                new Reading(2000, "2021-07-31"),
+                new Reading(2200, "2021-08-31")
+            ];
+            let expectedEstimates = [];
+
+            let actualEstimates = Reading.getEstimatesFromReadingsArray(readings);
+
+            actualEstimates.should.eql(expectedEstimates);
+        });
     });
 });
 
