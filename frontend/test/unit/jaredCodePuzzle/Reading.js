@@ -18,11 +18,6 @@ module.exports = class Reading {
                 throw new RangeError("readings must be in ascending date order");
             }
 
-            let lastDayOfMonthOfFirstReading = firstReading.readingDate.getLastDayOfMonth();
-            if (firstReading.readingDate.compare(lastDayOfMonthOfFirstReading) === 0) {
-                estimates.push(firstReading);
-            }
-
             let dailyCumulative = Reading.getDailyEstimatedCumluative(firstReading, secondReading);
             let missingEstimates = Reading.getEstimationDatesBetweenDates(firstReading.readingDate, secondReading.readingDate);
 
