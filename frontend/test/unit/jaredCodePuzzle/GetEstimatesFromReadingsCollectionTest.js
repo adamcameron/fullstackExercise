@@ -147,6 +147,18 @@ describe("Tests a method Reading.getEstimatesFromReadingsArray that returns an a
 
             actualEstimates.should.eql(expectedEstimates);
         });
+
+        it("tests a potential off-by-one scenario when the reading is the day before the end of the month", function () {
+            let readings = [
+                new Reading(100, "2021-04-29"),
+                new Reading(120, "2021-05-01")
+            ];
+            let expectedEstimates = [new Reading(110, "2021-04-30")];
+
+            let actualEstimates = Reading.getEstimatesFromReadingsArray(readings);
+
+            actualEstimates.should.eql(expectedEstimates);
+        });
     });
 });
 
