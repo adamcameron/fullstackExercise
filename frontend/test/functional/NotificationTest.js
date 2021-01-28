@@ -14,7 +14,7 @@ describe("Tests of notification Vue Component", function() {
     describe("Tests happy path scenarios", function () {
         before("Load the page", async function () {
             this.timeout(5000);
-            await loadPage("http://webserver.backend/notification.html");
+            await loadPage("http://fullstackexercise.frontend/notification.html");
         });
 
         after("Close down the browser", async function () {
@@ -116,7 +116,7 @@ describe("Tests of notification Vue Component", function() {
     describe("Test notification-type validation", function () {
         before("Load the page", async function () {
             this.timeout(5000);
-            await loadPage("http://webserver.backend/invalidNotificationType.html");
+            await loadPage("http://fullstackexercise.frontend/invalidNotificationType.html");
         });
 
         after("Close down the browser", async function () {

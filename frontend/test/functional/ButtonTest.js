@@ -16,7 +16,7 @@ describe("Baseline tests of click-counter component", function () {
         page = await browser.newPage();
 
         await Promise.all([
-            page.goto("http://webserver.backend/button.html"),
+            page.goto("http://fullstackexercise.frontend/button.html"),
             page.waitForNavigation()
         ]);
     });

@@ -12,7 +12,7 @@ class PhpTest extends TestCase
     public function testGdayWorldPhpReturnsExpectedContent()
     {
         $client = new Client([
-            'base_uri' => 'http://webserver.backend/'
+            'base_uri' => 'http://fullstackexercise.backend/'
         ]);
 
         $response = $client->get('gdayWorld.php');

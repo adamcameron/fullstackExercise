@@ -17,7 +17,7 @@ describe("Baseline test of vue.js working", function () {
         browser = await puppeteer.launch( {args: ["--no-sandbox"]});
         page = await browser.newPage();
 
-        await page.goto("http://webserver.backend/gdayWorldViaVue.html");
+        await page.goto("http://fullstackexercise.frontend/gdayWorldViaVue.html");
     });
 
     after("Close down the browser", async function () {

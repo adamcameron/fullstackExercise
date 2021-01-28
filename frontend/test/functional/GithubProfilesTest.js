@@ -67,7 +67,7 @@ describe("Tests of githubProfiles page using github data", function () {
         page = await browser.newPage();
 
         await Promise.all([
-            page.goto("http://webserver.backend/githubProfiles.html"),
+            page.goto("http://fullstackexercise.frontend/githubProfiles.html"),
             page.waitForNavigation({waitUntil: "networkidle0"})
         ]);
     }

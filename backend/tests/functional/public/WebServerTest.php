@@ -15,7 +15,7 @@ class WebServerTest extends TestCase
 
 
         $client = new Client([
-            'base_uri' => 'http://webserver.backend/'
+            'base_uri' => 'http://fullstackexercise.backend/'
         ]);
 
         $response = $client->get('gdayWorld.html');

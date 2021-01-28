@@ -18,7 +18,8 @@ services:
     networks:
       backend:
         aliases:
-          - webserver.backend
+          - fullstackexercise.frontend
+          - fullstackexercise.backend
 
   php-fpm:
     build:
