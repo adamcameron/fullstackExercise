@@ -8,6 +8,7 @@ services:
       - ../frontend/public:/usr/share/nginx/html/frontend
       - ../backend/public:/usr/share/nginx/html/backend
       - ../log:/var/log
+      - ./nginx/root_home:/root
     ports:
       - "80:80"
     extra_hosts:
@@ -46,6 +47,7 @@ services:
       - "3306:3306"
     volumes:
       - ./mariadb/data:/var/lib/mysql
+      - ./mariadb/root_home:/root
     stdin_open: true
     tty: true
     networks:
