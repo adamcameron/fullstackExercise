@@ -11,5 +11,4 @@ WORKDIR  /usr/share/fullstackExercise/
 COPY config/* ./
 RUN npm install -g @vue/cli
 RUN npm install
-CMD ["npm", "run", "serve"]
 EXPOSE 8080
