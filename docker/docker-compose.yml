@@ -43,7 +43,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mariadb/data:/var/lib/mysql
+      - ../var/lib/mysql:/var/lib/mysql
       - ./mariadb/root_home:/root
     stdin_open: true
     tty: true
