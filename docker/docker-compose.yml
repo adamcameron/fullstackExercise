@@ -7,7 +7,7 @@ services:
     volumes:
       - ../frontend/public:/usr/share/nginx/html/frontend
       - ../backend/public:/usr/share/nginx/html/backend
-      - ../log:/var/log
+      - ../var/log:/var/log
       - ./nginx/root_home:/root
     ports:
       - "80:80"
