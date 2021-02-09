@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "test": "mocha test/**/*.js",
-    "xest": "run(){node_modules/.bin/mocha ${1-'test/**/*.js'}}; run",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --watch",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

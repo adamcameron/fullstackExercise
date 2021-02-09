@@ -11,9 +11,6 @@ services:
       - ./nginx/root_home:/root
     ports:
       - "80:80"
-    extra_hosts:
-      - "fullstackexercise.backend:127.0.0.1"
-      - "fullstackexercise.frontend:127.0.0.1"
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     networks:
