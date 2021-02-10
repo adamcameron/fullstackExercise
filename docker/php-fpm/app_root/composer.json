@@ -60,7 +60,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "test": "vendor/bin/phpunit",
+        "phpmd": "vendor/bin/phpmd src,test text phpmd.xml",
+        "phpcs": "vendor/bin/phpcs --standard=phpcs.xml.dist"
     },
     "conflict": {
         "symfony/symfony": "*"
