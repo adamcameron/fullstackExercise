@@ -1,7 +1,7 @@
 {
   "name": "full-stack-exercise",
   "description": "Creating a web site with Vue.js, Nginx, Symfony on PHP8 &amp; MariaDB running in Docker containers",
-  "version": "2.6.0",
+  "version": "2.12.0",
   "private": true,
   "scripts": {
     "test": "mocha test/**/*.js",

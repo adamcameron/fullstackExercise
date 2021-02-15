@@ -7,6 +7,8 @@ RUN apt-get update \
     && apt-get install -y google-chrome-stable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf libxss1 \
       --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install vim --yes
 WORKDIR  /usr/share/fullstackExercise/
 COPY config/* ./
 RUN npm install -g @vue/cli
