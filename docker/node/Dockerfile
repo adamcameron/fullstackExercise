@@ -11,6 +11,7 @@ RUN apt-get update
 RUN apt-get install vim --yes
 WORKDIR  /usr/share/fullstackExercise/
 COPY config/* ./
+ENV NPM_CONFIG_CACHE=/var/cache/npm/
 RUN npm install -g @vue/cli
 RUN npm install
 EXPOSE 8080
