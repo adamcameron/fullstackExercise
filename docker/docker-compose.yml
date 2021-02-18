@@ -61,6 +61,10 @@ services:
       - ../frontend/src:/usr/share/fullstackExercise/src
       - ../frontend/test:/usr/share/fullstackExercise/test
       - ./node/root_home:/root
+      - ./node/config/package.json:/usr/share/fullstackExercise/package.json
+      - ./node/config/package-lock.json:/usr/share/fullstackExercise/package-lock.json
+      - ./node/config/vue.config.js:/usr/share/fullstackExercise/vue.config.js
+      - ./node/config/babel.config.js:/usr/share/fullstackExercise/babel.config.js
     stdin_open: true
     tty: true
     networks:
