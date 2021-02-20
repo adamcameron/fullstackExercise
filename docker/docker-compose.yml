@@ -21,7 +21,8 @@ services:
 
   php-fpm:
     build:
-      context: ./php-fpm
+      context: ..
+      dockerfile: docker/php-fpm/Dockerfile
     environment:
       - DATABASE_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     volumes:
@@ -30,8 +31,8 @@ services:
       - ../backend/src:/usr/share/fullstackExercise/src
       - ../backend/tests:/usr/share/fullstackExercise/tests
       - ../backend/spec:/usr/share/fullstackExercise/spec
-      - ./php-fpm/app_root/composer.json:/usr/share/fullstackExercise/composer.json
-      - ./php-fpm/app_root/composer.lock:/usr/share/fullstackExercise/composer.lock
+      - ../composer.json:/usr/share/fullstackExercise/composer.json
+      - ../composer.lock:/usr/share/fullstackExercise/composer.lock
       - ./php-fpm/app_root/kahlan-config.php:/usr/share/fullstackExercise/kahlan-config.php
       - ./php-fpm/root_home:/root
     stdin_open: true
