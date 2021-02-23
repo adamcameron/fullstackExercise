@@ -65,18 +65,19 @@ services:
           - database.backend
   node:
     build:
-      context: ./node
+      context: ../frontend
+      dockerfile: ../docker/node/Dockerfile
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     volumes:
       - ../frontend/public:/usr/share/fullstackExercise/public
       - ../frontend/src:/usr/share/fullstackExercise/src
       - ../frontend/test:/usr/share/fullstackExercise/test
+      - ../frontend/package.json:/usr/share/fullstackExercise/package.json
+      - ../frontend/package-lock.json:/usr/share/fullstackExercise/package-lock.json
+      - ../frontend/vue.config.js:/usr/share/fullstackExercise/vue.config.js
+      - ../frontend/babel.config.js:/usr/share/fullstackExercise/babel.config.js
       - ./node/root_home:/root
-      - ./node/config/package.json:/usr/share/fullstackExercise/package.json
-      - ./node/config/package-lock.json:/usr/share/fullstackExercise/package-lock.json
-      - ./node/config/vue.config.js:/usr/share/fullstackExercise/vue.config.js
-      - ./node/config/babel.config.js:/usr/share/fullstackExercise/babel.config.js
     stdin_open: true
     tty: true
     networks:
