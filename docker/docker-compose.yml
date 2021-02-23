@@ -21,8 +21,8 @@ services:
 
   php-fpm:
     build:
-      context: ..
-      dockerfile: docker/php-fpm/Dockerfile
+      context: ../backend
+      dockerfile: ../docker/php-fpm/Dockerfile
     environment:
       - DATABASE_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
     volumes:
@@ -31,9 +31,16 @@ services:
       - ../backend/src:/usr/share/fullstackExercise/src
       - ../backend/tests:/usr/share/fullstackExercise/tests
       - ../backend/spec:/usr/share/fullstackExercise/spec
-      - ../composer.json:/usr/share/fullstackExercise/composer.json
-      - ../composer.lock:/usr/share/fullstackExercise/composer.lock
-      - ./php-fpm/app_root/kahlan-config.php:/usr/share/fullstackExercise/kahlan-config.php
+      - ../backend/.env:/usr/share/fullstackExercise/.env
+      - ../backend/.env.test:/usr/share/fullstackExercise/.env.test
+      - ../backend/.gitignore:/usr/share/fullstackExercise/.gitignore
+      - ../backend/composer.json:/usr/share/fullstackExercise/composer.json
+      - ../backend/composer.lock:/usr/share/fullstackExercise/composer.lock
+      - ../backend/kahlan-config.php:/usr/share/fullstackExercise/kahlan-config.php
+      - ../backend/phpcs.xml.dist:/usr/share/fullstackExercise/phpcs.xml.dist
+      - ../backend/phpmd.xml:/usr/share/fullstackExercise/phpmd.xml
+      - ../backend/phpunit.xml.dist:/usr/share/fullstackExercise/phpunit.xml.dist
+      - ../backend/symfony.lock:/usr/share/fullstackExercise/symfony.lock
       - ./php-fpm/root_home:/root
     stdin_open: true
     tty: true

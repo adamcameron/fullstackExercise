@@ -9,7 +9,8 @@ RUN pecl install xdebug-3.0.1 && docker-php-ext-enable xdebug
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 ENV XDEBUG_MODE=coverage
 WORKDIR  /usr/share/fullstackExercise/
-COPY ./docker/php-fpm/app_root/ /usr/share/fullstackExercise/
+COPY ./bin/ /usr/share/fullstackExercise/bin/
+COPY ./var/ /usr/share/fullstackExercise/var/
 COPY ./composer.json /usr/share/fullstackExercise/composer.json
 COPY ./composer.lock /usr/share/fullstackExercise/composer.lock
 CMD composer install ; php-fpm
