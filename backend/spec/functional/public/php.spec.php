@@ -1,5 +1,5 @@
 <?php
-namespace adamCameron\fullStackExercise\spec\functional;
+namespace adamCameron\fullStackExercise\spec\functional\public;
 
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Response;
