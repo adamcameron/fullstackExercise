@@ -24,7 +24,9 @@ services:
       context: ../backend
       dockerfile: ../docker/php-fpm/Dockerfile
     environment:
-      - DATABASE_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - ../backend/config:/usr/share/fullstackExercise/config
       - ../backend/public:/usr/share/fullstackExercise/public
@@ -52,6 +54,9 @@ services:
       context: ./mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
