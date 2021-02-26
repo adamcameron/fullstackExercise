@@ -6,6 +6,11 @@
         <label for="phoneNumber" class="required">Phone number:</label>
         <input type="text" name="phoneNumber" required="required" maxlength="50" id="phoneNumber">
 
+        <label for="workshopsToAttend" class="required">Workshops to attend:</label>
+        <select name="workshopsToAttend[]" multiple="multiple" required="required" id="workshopsToAttend">
+            <option v-for="workshop in workshops" :value="workshop.value" :key="workshop.value">{{workshop.text}}</option>
+        </select>
+
         <label for="emailAddress" class="required">Email address:</label>
         <input type="text" name="emailAddress" required="required" maxlength="320" id="emailAddress">
 
@@ -16,6 +21,13 @@
 
 <script>
 export default {
-  name: 'WorkshopRegistrationForm'
+  name: "WorkshopRegistrationForm",
+    inject: ["workshopService"],
+    data() {
+      return {workshops: []};
+    },
+    mounted() {
+      this.workshops = this.workshopService.getWorkshops();
+    }
 }
 </script>
