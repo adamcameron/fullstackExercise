@@ -10,6 +10,11 @@ module.exports = {
             entry: "src/gdayWorld/main.js",
             template: "public/gdayWorldViaVue.html",
             filename: "gdayWorldViaVue.html"
+        },
+        workshopRegistration: {
+            entry: "src/workshopRegistration/main.js",
+            template: "public/workshopRegistration.html",
+            filename: "workshopRegistration.html"
         }
     },
     devServer: {

@@ -1,12 +1,12 @@
 import WorkshopRegistrationForm from "../../src/workshopRegistration/components/WorkshopRegistrationForm";
-import WorkshopService from "../../src/workshopRegistration/services/WorkshopService"
+import WorkshopService from "../../src/workshopRegistration/services/WorkshopService";
 
 import {shallowMount} from "@vue/test-utils";
 
 import {expect} from "chai";
 import sinon from "sinon";
 
-describe("Tests of WorkshopRegistrationForm component", () => {
+describe.only("Tests of WorkshopRegistrationForm component", () => {
 
     let component;
     let expectedOptions = [
@@ -42,7 +42,7 @@ describe("Tests of WorkshopRegistrationForm component", () => {
         let [name, type, maxLength, labelText] = Object.values(caseValues);
 
         it(`should have a required ${type} input for ${name}, maxLength ${maxLength}, and label '${labelText}'`, () => {
-            let field = component.find(`form>input[name='${name}']`);
+            let field = component.find(`form.workshopRegistration input[name='${name}']`);
 
             expect(field.exists(), `${name} field must exist`).to.be.true;
             expect(field.attributes("required"), `${name} field must be required`).to.exist;
@@ -54,7 +54,7 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should have a required workshopsToAttend multiple-select box, with label 'Workshops to attend'", () => {
-        let field = component.find(`form>select[name='workshopsToAttend[]']`);
+        let field = component.find(`form.workshopRegistration select[name='workshopsToAttend[]']`);
 
         expect(field.exists(), "workshopsToAttend field must exist").to.be.true;
         expect(field.attributes("required"), "workshopsToAttend field must be required").to.exist;
@@ -68,18 +68,47 @@ describe("Tests of WorkshopRegistrationForm component", () => {
         let id = field.attributes("id");
         expect(id, "id attribute must be present").to.exist;
 
-        let label = component.find(`form>label[for='${id}']`);
+        let label = component.find(`form.workshopRegistration label[for='${id}']`);
         expect(label, `${name} field must have a label`).to.exist;
         expect(label.text(), `${name} field's label must have value '${labelText}'`).to.equal(`${labelText}:`);
     };
 
     it("should list the workshop options fetched from the back-end", () => {
-        let options = component.findAll(`form>select[name='workshopsToAttend[]']>option`);
+        let options = component.findAll(`form.workshopRegistration select[name='workshopsToAttend[]']>option`);
 
         expect(options).to.have.length(expectedOptions.length);
         options.forEach((option, i) => {
             expect(option.attributes("value"), `option[${i}] value incorrect`).to.equal(expectedOptions[i].value.toString());
             expect(option.text(), `option[${i}] text incorrect`).to.equal(expectedOptions[i].text);
         });
+    });
+
+    it("should have a button to submit the registration", () => {
+        let button = component.find(`form.workshopRegistration button`);
+
+        expect(button.exists(), "submit button must exist").to.be.true;
+        expect(button.text(), "submit button must be labelled 'register'").to.equal("Register");
+    });
+
+    it.only("should hide the form when it is submitted", async () => {
+        let button = component.find(`form.workshopRegistration button`);
+
+        await button.trigger("click");
+
+        let form = component.find("form.workshopRegistration");
+        expect(form).to.exist;
+        expect(form.attributes("disabled")).to.exist;
+        expect(button.text()).to.equal("Processing");
+    });
+
+    it("scratch" , async () => {
+        let stages = [];
+        component.vm.$watch("stage", (newValue) => {
+            stages.push(newValue);
+        });
+        let button = component.find(`form.workshopRegistration button`);
+
+        await button.trigger("click");
+        expect(true).to.be.true;
     });
 });
