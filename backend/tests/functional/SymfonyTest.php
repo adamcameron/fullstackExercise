@@ -35,7 +35,7 @@ class SymfonyTest extends TestCase
     private function loadHtmlWithoutHtml5ErrorReporting($html) : \DOMDocument
     {
         $document = new \DOMDocument();
-        libxml_use_internal_errors(TRUE);
+        libxml_use_internal_errors(true);
         $document->loadHTML($html);
         libxml_clear_errors();
 

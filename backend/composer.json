@@ -64,7 +64,11 @@
         ],
         "test": "vendor/bin/phpunit",
         "spec": "vendor/bin/kahlan",
-        "phpmd": "vendor/bin/phpmd src,test text phpmd.xml",
+        "coverage": [
+            "vendor/bin/kahlan --lcov=\"var/tmp/lcov/coverage.info\" --coverage=4",
+            "genhtml --output-directory public/lcov/ var/tmp/lcov/coverage.info"
+        ],
+        "phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
         "phpcs": "vendor/bin/phpcs --standard=phpcs.xml.dist"
     },
     "conflict": {
