@@ -16,11 +16,9 @@ Filters::apply($this, 'coverage', function($next) {
         'driver'    => new Xdebug(),
         'path'      => $this->commandLine()->get('src'),
         'exclude'   => [
-            'src/Kernel.php',
-            'src/Controller/GreetingsController.php'
+            'src/Kernel.php'
         ],
         'colors'    => !$this->commandLine()->get('no-colors')
     ]);
     $reporters->add('coverage', $coverage);
 });
-

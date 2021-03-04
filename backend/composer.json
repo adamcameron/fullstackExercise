@@ -36,13 +36,11 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
             "adamCameron\\fullStackExercise\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
 			"adamCameron\\fullStackExercise\\tests\\": "tests/"
         }
     },
@@ -65,7 +63,7 @@
         "test": "vendor/bin/phpunit",
         "spec": "vendor/bin/kahlan",
         "coverage": [
-            "vendor/bin/kahlan --lcov=\"var/tmp/lcov/coverage.info\" --coverage=4",
+            "vendor/bin/kahlan --lcov=\"var/tmp/lcov/coverage.info\" --exclude=adamCameron\\\\fullStackExercise\\\\Kernel",
             "genhtml --output-directory public/lcov/ var/tmp/lcov/coverage.info"
         ],
         "phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",
