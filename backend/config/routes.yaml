@@ -5,3 +5,7 @@
 greetings:
   path: /greetings/{name}
   controller: adamCameron\fullStackExercise\Controller\GreetingsController::doGet
+
+workshops:
+  path: /workshops/
+  controller: adamCameron\fullStackExercise\Controller\WorkshopsController::doGet

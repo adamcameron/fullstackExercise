@@ -6,10 +6,14 @@ use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/** @testdox Tests of baseline Symfony install */
 class SymfonyTest extends TestCase
 {
-    /** @coversNothing */
-    public function testSymfonyWelcomeScreenDisplays()
+    /**
+     * @testdox it displays the Symfony welcome screen
+     * @coversNothing
+     */
+    public function testWelcomeScreen()
     {
 
         $client = new Client([
@@ -43,7 +47,10 @@ class SymfonyTest extends TestCase
     }
 
 
-    /** @coversNothing */
+    /**
+     * @testdox it returns a personalised greeting from the /greetings end point
+     * @coversNothing
+     */
     public function testGreetingsEndPointReturnsPersonalisedGreeting()
     {
         $testName = 'Zachary';

@@ -6,6 +6,10 @@
         forceCoversAnnotation="true"
         cacheResult="false"
 >
+    <php>
+        <server name="KERNEL_CLASS" value="adamCameron\fullStackExercise\Kernel"/>
+    </php>
+
     <coverage>
         <include>
             <directory suffix=".php">src</directory>
@@ -17,6 +21,9 @@
     <testsuites>
         <testsuite name="Functional tests">
             <directory>tests/functional/</directory>
+        </testsuite>
+        <testsuite name="Integration tests">
+            <directory>tests/integration/</directory>
         </testsuite>
         <testsuite name="Unit tests">
             <directory>tests/unit/</directory>

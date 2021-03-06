@@ -6,6 +6,11 @@ use Kahlan\Reporter\Coverage\Driver\Xdebug;
 $commandLine = $this->commandLine();
 $commandLine->option('no-header', 'default', 1);
 
+$this->commandLine()->set('include', []);
+$this->commandLine()->set('exclude', [
+    'adamCameron\fullStackExercise\Kernel'
+]);
+
 Filters::apply($this, 'coverage', function($next) {
     if (!extension_loaded('xdebug')) {
         return;

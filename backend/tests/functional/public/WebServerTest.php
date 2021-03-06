@@ -6,9 +6,13 @@ use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/** @testdox Webserver config tests */
 class WebServerTest extends TestCase
 {
-    /** @coversNothing */
+    /**
+     * @testdox It serves gdayWorld.html with expected content
+     * @coversNothing
+     */
     public function testGdayWorldHtmlReturnsExpectedContent()
     {
         $expectedContent = "G'day world!";

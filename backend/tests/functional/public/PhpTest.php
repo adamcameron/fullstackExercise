@@ -6,9 +6,13 @@ use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/** @testdox PHP config tests */
 class PhpTest extends TestCase
 {
-    /** @coversNothing */
+    /**
+     * @testdox gdayWorld.php outputs G'day world!
+     * @coversNothing
+     */
     public function testGdayWorldPhpReturnsExpectedContent()
     {
         $client = new Client([

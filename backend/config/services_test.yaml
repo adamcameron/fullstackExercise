@@ -1,0 +1,4 @@
+services:
+  test.WorkshopCollection:
+    alias: adamCameron\fullStackExercise\Model\WorkshopCollection
+    public: true
