@@ -1,4 +1,4 @@
 services:
-  test.WorkshopCollection:
-    alias: adamCameron\fullStackExercise\Model\WorkshopCollection
+  test.WorkshopsRepository:
+    alias: adamCameron\fullStackExercise\Repository\WorkshopsRepository
     public: true

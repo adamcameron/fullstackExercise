@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Dotenv\Dotenv;
 
 /** @testdox End to end tests of WorkshopController */
-class WorkshopControllerTest extends WebTestCase
+class WorkshopsControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 

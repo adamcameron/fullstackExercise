@@ -9,7 +9,6 @@ class WorkshopCollectionFactory
 {
     private WorkshopsRepository $repository;
 
-
     public function __construct(WorkshopsRepository $repository)
     {
         $this->repository = $repository;
