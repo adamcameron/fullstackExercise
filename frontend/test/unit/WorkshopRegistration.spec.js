@@ -1,5 +1,8 @@
-import WorkshopRegistrationForm from "../../src/workshopRegistration/components/WorkshopRegistrationForm";
-import WorkshopService from "../../src/workshopRegistration/services/WorkshopService";
+import WorkshopRegistrationForm from "../../src/workshopRegistration/component/WorkshopRegistrationForm";
+import WorkshopService from "../../src/workshopRegistration/service/WorkshopService";
+import WorkshopCollection from "../../src/workshopRegistration/model/WorkshopCollection";
+import WorkshopRepository from "../../src/workshopRegistration/repository/WorkshopRepository";
+import WorkshopDAO from "../../src/workshopRegistration/dao/WorkshopDAO";
 
 import {shallowMount} from "@vue/test-utils";
 
@@ -22,8 +25,14 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     let workshopService;
 
     beforeEach("Load test WorkshopRegistrationForm component", async () => {
-        workshopService = new WorkshopService();
-        sinon.stub(workshopService, "getWorkshops").returns(expectedOptions);
+        workshopService = new WorkshopService(
+            new WorkshopCollection(
+                new WorkshopRepository(
+                    new WorkshopDAO()
+                )
+            )
+        );
+        //sinon.stub(workshopService, "getWorkshops").returns(expectedOptions);
 
         component = await shallowMount(
             WorkshopRegistrationForm,
@@ -79,9 +88,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
         expect(label.text(), `${name} field's label must have value '${labelText}'`).to.equal(`${labelText}:`);
     };
 
-    it("should list the workshop options fetched from the back-end", () => {
+    it.only("should list the workshop options fetched from the back-end", () => {
         let options = component.findAll("form.workshopRegistration select[name='workshopsToAttend[]']>option");
-
         expect(options).to.have.length(expectedOptions.length);
         options.forEach((option, i) => {
             expect(option.attributes("value"), `option[${i}] value incorrect`).to.equal(expectedOptions[i].value.toString());

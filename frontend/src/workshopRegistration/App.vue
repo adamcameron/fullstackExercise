@@ -3,8 +3,17 @@
 </template>
 
 <script>
-import WorkshopRegistrationForm from "./components/WorkshopRegistrationForm";
-import WorkshopService from "../../src/workshopRegistration/services/WorkshopService";
+import WorkshopRegistrationForm from "./component/WorkshopRegistrationForm";
+import WorkshopService from "./service/WorkshopService";
+import WorkshopCollection from "./model/WorkshopCollection";
+import WorkshopRepository from "./repository/WorkshopRepository";
+import WorkshopDAO from "./dao/WorkshopDAO";
+
+let dao = new WorkshopDAO();
+let repo = new WorkshopRepository(dao);
+let collection = new WorkshopCollection(repo);
+
+let workshopService = new WorkshopService(collection);
 
 export default {
     name: 'App',
@@ -12,7 +21,7 @@ export default {
         WorkshopRegistrationForm
     },
     provide: {
-        workshopService: new WorkshopService()
+        workshopService: workshopService
     }
 }
 </script>

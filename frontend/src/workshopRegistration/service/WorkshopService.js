@@ -1,11 +1,12 @@
 class WorkshopService {
-    getWorkshops() {
-        return [
-            {value: 2, text:"Workshop 1"},
-            {value: 3, text:"Workshop 2"},
-            {value: 5, text:"Workshop 3"},
-            {value: 7, text:"Workshop 4"}
-        ];
+
+    constructor(workshopCollection) {
+        this.workshopCollection = workshopCollection;
+    }
+
+    async getWorkshops() {
+        await this.workshopCollection.loadAll();
+        return this.workshopCollection;
     }
 
     saveWorkshopRegistration(details) {

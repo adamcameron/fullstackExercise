@@ -4,7 +4,7 @@ namespace adamCameron\fullStackExercise;
 
 class MyClass
 {
-    public function needsTesting(): bool
+    public function needsTesting()
     {
         return true;
     }

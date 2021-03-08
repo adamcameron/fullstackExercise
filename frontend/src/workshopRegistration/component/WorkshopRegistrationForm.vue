@@ -72,7 +72,7 @@ form.workshopRegistration, dl.workshopRegistration {
 
             <label for="workshopsToAttend" class="required">Workshops to attend:</label>
             <select name="workshopsToAttend[]" multiple="true" required="required" id="workshopsToAttend" v-model="formValues.workshopsToAttend">
-                <option v-for="workshop in workshops" :value="workshop.value" :key="workshop.value">{{workshop.text}}</option>
+                <option v-for="workshop in workshops" :value="workshop.id" :key="workshop.id">{{workshop.name}}</option>
             </select>
 
             <label for="emailAddress" class="required">Email address:</label>
@@ -114,7 +114,9 @@ const REGISTRATION_STATE_SUMMARY = "summary";
 
 export default {
     name: "WorkshopRegistrationForm",
-    inject: ["workshopService"],
+    inject: [
+        "workshopService"
+    ],
     data() {
         return {
             registrationState: REGISTRATION_STATE_FORM,
@@ -134,7 +136,10 @@ export default {
         this.REGISTRATION_STATE_SUMMARY = REGISTRATION_STATE_SUMMARY;
     },
     mounted() {
-        this.workshops = this.workshopService.getWorkshops();
+        this.workshops = this.workshopService.getWorkshops()
+            .then((workshops) => {
+                this.workshops = workshops;
+            });
     },
     methods : {
         processFormSubmission(event) {
