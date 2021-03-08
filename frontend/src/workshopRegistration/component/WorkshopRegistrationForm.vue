@@ -101,7 +101,7 @@ form.workshopRegistration, dl.workshopRegistration {
     <dt>Workshops:</dt>
     <dd>
         <ul>
-            <li v-for="workshop in summaryValues.workshopsToAttend" :key="workshop.value">{{workshop.text}}</li>
+            <li v-for="workshop in summaryValues.workshopsToAttend" :key="workshop.id">{{workshop.name}}</li>
         </ul>
     </dd>
 </dl>
@@ -142,10 +142,10 @@ export default {
             });
     },
     methods : {
-        processFormSubmission(event) {
+        async processFormSubmission(event) {
             event.preventDefault();
             this.registrationState = REGISTRATION_STATE_PROCESSING;
-            this.summaryValues = this.workshopService.saveWorkshopRegistration(this.formValues);
+            this.summaryValues = await this.workshopService.saveWorkshopRegistration(this.formValues);
             this.registrationState = REGISTRATION_STATE_SUMMARY;
         }
     },

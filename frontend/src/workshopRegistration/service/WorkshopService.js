@@ -9,19 +9,21 @@ class WorkshopService {
         return this.workshopCollection;
     }
 
-    saveWorkshopRegistration(details) {
-        let allWorkshops = this.getWorkshops();
-        let selectedWorkshops = allWorkshops.filter((workshop) => {
-            return details.workshopsToAttend.indexOf(workshop.value) >= 0;
-        });
+    async saveWorkshopRegistration(details) {
+        return this.getWorkshops()
+            .then((allWorkshops) => {
+                let selectedWorkshops = allWorkshops.filter((workshop) => {
+                    return details.workshopsToAttend.indexOf(workshop.id) >= 0;
+                });
+                return {
+                    registrationCode : "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+                    fullName : details.fullName,
+                    phoneNumber : details.phoneNumber,
+                    emailAddress : details.emailAddress,
+                    workshopsToAttend : selectedWorkshops
+                };
+            });
 
-        return {
-            registrationCode : "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-            fullName : details.fullName,
-            phoneNumber : details.phoneNumber,
-            emailAddress : details.emailAddress,
-            workshopsToAttend : selectedWorkshops
-        };
     }
 }
 
