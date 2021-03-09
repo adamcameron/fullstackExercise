@@ -1,8 +1,8 @@
-import WorkshopRegistrationForm from "../../src/workshopRegistration/component/WorkshopRegistrationForm";
-import WorkshopService from "../../src/workshopRegistration/service/WorkshopService";
-import WorkshopCollection from "../../src/workshopRegistration/model/WorkshopCollection";
-import WorkshopRepository from "../../src/workshopRegistration/repository/WorkshopRepository";
-import WorkshopDAO from "../../src/workshopRegistration/dao/WorkshopDAO";
+import WorkshopRegistrationForm from "../../src/workshopRegistration/WorkshopRegistrationForm";
+import WorkshopService from "../../src/workshopRegistration/WorkshopService";
+import WorkshopCollection from "../../src/workshopRegistration/WorkshopCollection";
+import WorkshopRepository from "../../src/workshopRegistration/WorkshopRepository";
+import WorkshopDAO from "../../src/workshopRegistration/WorkshopDAO";
 
 import {shallowMount} from "@vue/test-utils";
 

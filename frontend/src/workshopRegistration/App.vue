@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import WorkshopRegistrationForm from "./component/WorkshopRegistrationForm";
-import WorkshopService from "./service/WorkshopService";
-import WorkshopCollection from "./model/WorkshopCollection";
-import WorkshopRepository from "./repository/WorkshopRepository";
-import WorkshopDAO from "./dao/WorkshopDAO";
+import WorkshopRegistrationForm from "./WorkshopRegistrationForm";
+import WorkshopService from "./WorkshopService";
+import WorkshopCollection from "./WorkshopCollection";
+import WorkshopRepository from "./WorkshopRepository";
+import WorkshopDAO from "./WorkshopDAO";
 
 let dao = new WorkshopDAO();
 let repo = new WorkshopRepository(dao);

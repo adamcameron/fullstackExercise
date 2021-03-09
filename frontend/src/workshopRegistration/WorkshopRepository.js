@@ -1,4 +1,4 @@
-import Workshop from "../model/Workshop";
+import Workshop from "./Workshop";
 
 class WorkshopRepository {
 
