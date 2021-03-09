@@ -25,14 +25,17 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     let workshopService;
 
     beforeEach("Load test WorkshopRegistrationForm component", async () => {
+        let dao = new WorkshopDAO();
+        sinon.stub(dao, "selectAll").returns(Promise.resolve(
+            expectedOptions.map((option) => ({id: option.value, name: option.text}))
+        ));
         workshopService = new WorkshopService(
             new WorkshopCollection(
                 new WorkshopRepository(
-                    new WorkshopDAO()
+                    dao
                 )
             )
         );
-        //sinon.stub(workshopService, "getWorkshops").returns(expectedOptions);
 
         component = await shallowMount(
             WorkshopRegistrationForm,
@@ -88,12 +91,14 @@ describe("Tests of WorkshopRegistrationForm component", () => {
         expect(label.text(), `${name} field's label must have value '${labelText}'`).to.equal(`${labelText}:`);
     };
 
-    it.only("should list the workshop options fetched from the back-end", () => {
-        let options = component.findAll("form.workshopRegistration select[name='workshopsToAttend[]']>option");
-        expect(options).to.have.length(expectedOptions.length);
-        options.forEach((option, i) => {
-            expect(option.attributes("value"), `option[${i}] value incorrect`).to.equal(expectedOptions[i].value.toString());
-            expect(option.text(), `option[${i}] text incorrect`).to.equal(expectedOptions[i].text);
+    it("should list the workshop options fetched from the back-end", () => {
+        component.vm.$data.workshops.then(() => {
+            let options = component.findAll("form.workshopRegistration select[name='workshopsToAttend[]']>option");
+            expect(options).to.have.length(expectedOptions.length);
+            options.forEach((option, i) => {
+                expect(option.attributes("value"), `option[${i}] value incorrect`).to.equal(expectedOptions[i].value.toString());
+                expect(option.text(), `option[${i}] text incorrect`).to.equal(expectedOptions[i].text);
+            });
         });
     });
 
@@ -104,93 +109,102 @@ describe("Tests of WorkshopRegistrationForm component", () => {
         expect(button.text(), "submit button must be labelled 'register'").to.equal("Register");
     });
 
-    it("should leave the submit button disabled until the form is filled", async () => {
-        let button = component.find("form.workshopRegistration button");
+    it("should leave the submit button disabled until the form is filled", () => {
+        component.vm.$data.workshops.then(async () => {
+            let button = component.find("form.workshopRegistration button");
 
-        expect(button.attributes("disabled"), "button should be disabled").to.exist;
+            expect(button.attributes("disabled"), "button should be disabled before form is populated").to.exist;
 
-        await populateForm();
-
-        expect(button.attributes("disabled"), "button should be enabled").to.not.exist;
-    });
-
-    it("should disable the form and indicate data is processing when the form is submitted", async () => {
-        let lastLabel;
-        component.vm.$watch("submitButtonLabel", (newValue) => {
-            lastLabel = newValue;
-        });
-
-        let lastFormState;
-        component.vm.$watch("isFormDisabled", (newValue) => {
-            lastFormState = newValue;
-        });
-
-        await submitPopulatedForm();
-
-        expect(lastLabel).to.equal("Processing&hellip;");
-        expect(lastFormState).to.be.true;
-    });
-
-    it("should send the form values to WorkshopService.saveWorkshopRegistration when the form is submitted", async () => {
-        sinon.spy(workshopService, "saveWorkshopRegistration");
-
-        await submitPopulatedForm();
-
-        expect(
-            workshopService.saveWorkshopRegistration.calledOnceWith({
-                fullName: TEST_INPUT_VALUE + "fullName",
-                phoneNumber: TEST_INPUT_VALUE + "phoneNumber",
-                workshopsToAttend: [TEST_SELECT_VALUE],
-                emailAddress: TEST_INPUT_VALUE + "emailAddress",
-                password: TEST_INPUT_VALUE + "password"
-            }),
-            "Incorrect values sent to WorkshopService.saveWorkshopRegistration"
-        ).to.be.true;
-    });
-
-    it("should display the registration summary 'template' after the registration has been submitted", async () => {
-        await submitPopulatedForm();
-
-        let summary = component.find("dl.workshopRegistration");
-        expect(summary.exists(), "summary must exist").to.be.true;
-
-        let expectedLabels = ["Registration Code", "Full name", "Phone number", "Email address", "Workshops"];
-        let labels = summary.findAll("dt");
-
-        expect(labels).to.have.length(expectedLabels.length);
-        expectedLabels.forEach((label, i) => {
-            expect(labels[i].text()).to.equal(`${label}:`);
+            await populateForm();
+            expect(button.attributes("disabled"), "button should be enabled after form is populated").to.not.exist;
         });
     });
 
-    it("should display the summary values in the registration summary", async () => {
-        const summaryValues = {
-            registrationCode : "TEST_registrationCode",
-            fullName : "TEST_fullName",
-            phoneNumber : "TEST_phoneNumber",
-            emailAddress : "TEST_emailAddress",
-            workshopsToAttend : [{value: "TEST_workshopToAttend_VALUE", text:"TEST_workshopToAttend_TEXT"}]
-        };
-        sinon.stub(workshopService, "saveWorkshopRegistration").returns(summaryValues);
+    it("should disable the form and indicate data is processing when the form is submitted", () => {
+        component.vm.$data.workshops.then(async () => {
+            let lastLabel;
+            component.vm.$watch("submitButtonLabel", (newValue) => {
+                lastLabel = newValue;
+            });
 
-        await submitPopulatedForm();
+            let lastFormState;
+            component.vm.$watch("isFormDisabled", (newValue) => {
+                lastFormState = newValue;
+            });
 
-        let summary = component.find("dl.workshopRegistration");
-        expect(summary.exists(), "summary must exist").to.be.true;
+            await submitPopulatedForm();
 
-        let expectedValues = Object.values(summaryValues);
-        let values = summary.findAll("dd");
-        expect(values).to.have.length(expectedValues.length);
+            expect(lastLabel).to.equal("Processing&hellip;");
+            expect(lastFormState).to.be.true;
+        });
+    });
 
-        let expectedWorkshopValue = expectedValues.pop();
-        let actualWorkshopValue = values.pop();
+    it("should send the form values to WorkshopService.saveWorkshopRegistration when the form is submitted", () => {
+        component.vm.$data.workshops.then(async () => {
+            sinon.spy(workshopService, "saveWorkshopRegistration");
 
-        let ddValue = actualWorkshopValue.find("ul>li");
-        expect(ddValue.exists()).to.be.true;
-        expect(ddValue.text()).to.equal(expectedWorkshopValue[0].text);
+            await submitPopulatedForm();
 
-        expectedValues.forEach((expectedValue, i) => {
-            expect(values[i].text()).to.equal(expectedValue);
+            expect(
+                workshopService.saveWorkshopRegistration.calledOnceWith({
+                    fullName: TEST_INPUT_VALUE + "fullName",
+                    phoneNumber: TEST_INPUT_VALUE + "phoneNumber",
+                    workshopsToAttend: [TEST_SELECT_VALUE],
+                    emailAddress: TEST_INPUT_VALUE + "emailAddress",
+                    password: TEST_INPUT_VALUE + "password"
+                }),
+                "Incorrect values sent to WorkshopService.saveWorkshopRegistration"
+            ).to.be.true;
+        });
+    });
+
+    it("should display the registration summary 'template' after the registration has been submitted", () => {
+        component.vm.$data.workshops.then(async () => {
+            await submitPopulatedForm();
+
+            let summary = component.find("dl.workshopRegistration");
+            expect(summary.exists(), "summary must exist").to.be.true;
+
+            let expectedLabels = ["Registration Code", "Full name", "Phone number", "Email address", "Workshops"];
+            let labels = summary.findAll("dt");
+
+            expect(labels).to.have.length(expectedLabels.length);
+            expectedLabels.forEach((label, i) => {
+                expect(labels[i].text()).to.equal(`${label}:`);
+            });
+        });
+    });
+
+    it("should display the summary values in the registration summary", () => {
+        component.vm.$data.workshops.then(async () => {
+            const summaryValues = {
+                registrationCode: "TEST_registrationCode",
+                fullName: "TEST_fullName",
+                phoneNumber: "TEST_phoneNumber",
+                emailAddress: "TEST_emailAddress",
+                workshopsToAttend: [{id: "TEST_workshopToAttend_VALUE", name: "TEST_workshopToAttend_TEXT"}]
+            };
+            sinon.stub(workshopService, "saveWorkshopRegistration").returns(summaryValues);
+
+            await submitPopulatedForm();
+
+            let summary = component.find("dl.workshopRegistration");
+            expect(summary.exists(), "summary must exist").to.be.true;
+
+            let expectedValues = Object.values(summaryValues);
+            let values = summary.findAll("dd");
+            expect(values).to.have.length(expectedValues.length);
+
+            let expectedWorkshopValue = expectedValues.pop();
+            let actualWorkshopValue = values.pop();
+
+            let ddValue = actualWorkshopValue.find("ul>li");
+            expect(ddValue.exists()).to.be.true;
+            expect(ddValue.text()).to.equal(expectedWorkshopValue[0].name);
+
+            expectedValues.forEach((expectedValue, i) => {
+                expect(values[i].text()).to.equal(expectedValue);
+            });
         });
     });
 

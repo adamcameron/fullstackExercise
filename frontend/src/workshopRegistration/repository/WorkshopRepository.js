@@ -9,10 +9,9 @@ class WorkshopRepository {
     selectAll() {
         return this.dao.selectAll()
             .then((unmodelledWorkshops) => {
-                let modelled = unmodelledWorkshops.map((unmodelledWorkshop) => {
+                return unmodelledWorkshops.map((unmodelledWorkshop) => {
                     return new Workshop(unmodelledWorkshop.id, unmodelledWorkshop.name);
                 });
-                return modelled;
             });
     }
 }

@@ -151,13 +151,16 @@ export default {
     },
     computed : {
         isFormUnready: function () {
-            return this.formValues.fullName.length === 0
+            let unready = this.formValues.fullName.length === 0
                 || this.formValues.phoneNumber.length === 0
                 || this.formValues.workshopsToAttend.length === 0
                 || this.formValues.emailAddress.length === 0
-                || this.formValues.password.length === 0
+                || this.formValues.password.length === 0;
+
+            return unready;
         },
         isFormDisabled: function() {
+
             return this.registrationState !== REGISTRATION_STATE_FORM;
         },
         submitButtonLabel: function() {
