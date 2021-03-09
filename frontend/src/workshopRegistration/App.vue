@@ -8,8 +8,10 @@ import WorkshopService from "./WorkshopService";
 import WorkshopCollection from "./WorkshopCollection";
 import WorkshopRepository from "./WorkshopRepository";
 import WorkshopDAO from "./WorkshopDAO";
+import Config from "./Config";
+const client = require('axios').default;
 
-let dao = new WorkshopDAO();
+let dao = new WorkshopDAO(client, Config);
 let repo = new WorkshopRepository(dao);
 let collection = new WorkshopCollection(repo);
 

@@ -1,9 +1,12 @@
-const axios = require('axios');
-
 class WorkshopDAO {
 
+    constructor(client, config) {
+        this.client = client;
+        this.config = config;
+    }
+
     selectAll() {
-        return axios.get("http://fullstackexercise.backend/workshops/")
+        return this.client.get(this.config.workshopsUrl)
             .then((response) => {
                 return response.data;
             });
