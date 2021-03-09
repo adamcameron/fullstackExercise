@@ -20,12 +20,9 @@ class WorkshopsController extends AbstractController
 
     public function doGet(Request $request) : JsonResponse
     {
-        $origin = $request->headers->get('origin');
-
-        error_log($origin . PHP_EOL . PHP_EOL, 3, '/var/log/adam_debug.log');
-
         $this->workshops->loadAll();
 
+        $origin = $request->headers->get('origin');
         return new JsonResponse(
             $this->workshops,
             Response::HTTP_OK,

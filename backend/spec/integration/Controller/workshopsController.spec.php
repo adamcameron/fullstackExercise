@@ -36,7 +36,7 @@ describe("End to end tests of WorkshopController", function () {
 
     it('returns the expected workshops from the database', function () {
         $webTestCase = $this->createWebTestCase();
-        $client = $webTestCase::getClient(['debug' => true]);
+        $client = $webTestCase::getClient(['debug' => false]);
 
         $client->request('GET', '/workshops/');
         $response = $client->getResponse();
