@@ -92,7 +92,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     };
 
     it("should list the workshop options fetched from the back-end", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             let options = component.findAll("form.workshopRegistration select[name='workshopsToAttend[]']>option");
             expect(options).to.have.length(expectedOptions.length);
             options.forEach((option, i) => {
@@ -110,7 +111,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should leave the submit button disabled until the form is filled", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             let button = component.find("form.workshopRegistration button");
 
             expect(button.attributes("disabled"), "button should be disabled before form is populated").to.exist;
@@ -121,7 +123,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should disable the form and indicate data is processing when the form is submitted", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             let lastLabel;
             component.vm.$watch("submitButtonLabel", (newValue) => {
                 lastLabel = newValue;
@@ -140,7 +143,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should send the form values to WorkshopService.saveWorkshopRegistration when the form is submitted", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             sinon.spy(workshopService, "saveWorkshopRegistration");
 
             await submitPopulatedForm();
@@ -159,7 +163,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should display the registration summary 'template' after the registration has been submitted", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             await submitPopulatedForm();
 
             let summary = component.find("dl.workshopRegistration");
@@ -176,7 +181,8 @@ describe("Tests of WorkshopRegistrationForm component", () => {
     });
 
     it("should display the summary values in the registration summary", () => {
-        component.vm.$data.workshops.then(async () => {
+        component.vm.$watch("workshops", async () => {
+            await flushPromises();
             const summaryValues = {
                 registrationCode: "TEST_registrationCode",
                 fullName: "TEST_fullName",

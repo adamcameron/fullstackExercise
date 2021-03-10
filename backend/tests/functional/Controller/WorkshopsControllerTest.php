@@ -3,14 +3,11 @@
 namespace adamCameron\fullStackExercise\tests\functional\Controller;
 
 use adamCameron\fullStackExercise\DAO\WorkshopsDAO;
-use adamCameron\fullStackExercise\Model\Workshop;
-use adamCameron\fullStackExercise\Model\WorkshopCollection;
-use adamCameron\fullStackExercise\Repository\WorkshopsRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Response;
 
-/** @testdox Tests of WorkshopController */
+/** @testdox Functional tests of WorkshopsController */
 class WorkshopsControllerTest extends WebTestCase
 {
     private $client;

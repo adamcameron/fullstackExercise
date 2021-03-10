@@ -133,11 +133,8 @@ export default {
         this.REGISTRATION_STATE_PROCESSING = REGISTRATION_STATE_PROCESSING;
         this.REGISTRATION_STATE_SUMMARY = REGISTRATION_STATE_SUMMARY;
     },
-    mounted() {
-        this.workshops = this.workshopService.getWorkshops()
-            .then((workshops) => {
-                this.workshops = workshops;
-            });
+    async mounted() {
+        this.workshops = await this.workshopService.getWorkshops();
     },
     methods : {
         async processFormSubmission(event) {
