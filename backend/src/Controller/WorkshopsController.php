@@ -28,6 +28,7 @@ class WorkshopsController extends AbstractController
             Response::HTTP_OK,
             [
                 'Access-Control-Allow-Origin' => $origin
-            ]);
+            ]
+        );
     }
 }

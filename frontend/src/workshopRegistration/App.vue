@@ -6,16 +6,18 @@
 import WorkshopRegistrationForm from "./WorkshopRegistrationForm";
 import WorkshopService from "./WorkshopService";
 import WorkshopCollection from "./WorkshopCollection";
-import WorkshopRepository from "./WorkshopRepository";
-import WorkshopDAO from "./WorkshopDAO";
+import WorkshopsRepository from "./WorkshopsRepository";
+import WorkshopsDAO from "./WorkshopsDAO";
 import Config from "./Config";
 const client = require('axios').default;
 
-let dao = new WorkshopDAO(client, Config);
-let repo = new WorkshopRepository(dao);
-let collection = new WorkshopCollection(repo);
-
-let workshopService = new WorkshopService(collection);
+let workshopService = new WorkshopService(
+    new WorkshopCollection(
+        new WorkshopsRepository(
+            new WorkshopsDAO(client, Config)
+        )
+    )
+);
 
 export default {
     name: 'App',
