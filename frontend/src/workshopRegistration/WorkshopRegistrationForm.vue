@@ -72,7 +72,7 @@ form.workshopRegistration, dl.workshopRegistration {
 
             <label for="workshopsToAttend" class="required">Workshops to attend:</label>
             <select name="workshopsToAttend[]" multiple="true" required="required" id="workshopsToAttend" v-model="formValues.workshopsToAttend">
-                <option v-for="workshop in workshops" :value="workshop.value" :key="workshop.value">{{workshop.text}}</option>
+                <option v-for="workshop in workshops" :value="workshop.id" :key="workshop.id">{{workshop.name}}</option>
             </select>
 
             <label for="emailAddress" class="required">Email address:</label>
@@ -101,7 +101,7 @@ form.workshopRegistration, dl.workshopRegistration {
     <dt>Workshops:</dt>
     <dd>
         <ul>
-            <li v-for="workshop in summaryValues.workshopsToAttend" :key="workshop.value">{{workshop.text}}</li>
+            <li v-for="workshop in summaryValues.workshopsToAttend" :key="workshop.id">{{workshop.name}}</li>
         </ul>
     </dd>
 </dl>
@@ -134,13 +134,16 @@ export default {
         this.REGISTRATION_STATE_SUMMARY = REGISTRATION_STATE_SUMMARY;
     },
     mounted() {
-        this.workshops = this.workshopService.getWorkshops();
+        this.workshops = this.workshopService.getWorkshops()
+            .then((workshops) => {
+                this.workshops = workshops;
+            });
     },
     methods : {
-        processFormSubmission(event) {
+        async processFormSubmission(event) {
             event.preventDefault();
             this.registrationState = REGISTRATION_STATE_PROCESSING;
-            this.summaryValues = this.workshopService.saveWorkshopRegistration(this.formValues);
+            this.summaryValues = await this.workshopService.saveWorkshopRegistration(this.formValues);
             this.registrationState = REGISTRATION_STATE_SUMMARY;
         }
     },

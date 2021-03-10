@@ -1,17 +1,18 @@
 class WorkshopService {
-    getWorkshops() {
-        return [
-            {value: 2, text:"Workshop 1"},
-            {value: 3, text:"Workshop 2"},
-            {value: 5, text:"Workshop 3"},
-            {value: 7, text:"Workshop 4"}
-        ];
+
+    constructor(workshopCollection) {
+        this.workshopCollection = workshopCollection;
     }
 
-    saveWorkshopRegistration(details) {
-        let allWorkshops = this.getWorkshops();
+    async getWorkshops() {
+        await this.workshopCollection.loadAll();
+        return this.workshopCollection;
+    }
+
+    async saveWorkshopRegistration(details) {
+        let allWorkshops = await this.getWorkshops();
         let selectedWorkshops = allWorkshops.filter((workshop) => {
-            return details.workshopsToAttend.indexOf(workshop.value) >= 0;
+            return details.workshopsToAttend.indexOf(workshop.id) >= 0;
         });
 
         return {

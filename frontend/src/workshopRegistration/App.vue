@@ -3,8 +3,21 @@
 </template>
 
 <script>
-import WorkshopRegistrationForm from "./components/WorkshopRegistrationForm";
-import WorkshopService from "../../src/workshopRegistration/services/WorkshopService";
+import WorkshopRegistrationForm from "./WorkshopRegistrationForm";
+import WorkshopService from "./WorkshopService";
+import WorkshopCollection from "./WorkshopCollection";
+import WorkshopsRepository from "./WorkshopsRepository";
+import WorkshopsDAO from "./WorkshopsDAO";
+import Config from "./Config";
+const client = require('axios').default;
+
+let workshopService = new WorkshopService(
+    new WorkshopCollection(
+        new WorkshopsRepository(
+            new WorkshopsDAO(client, Config)
+        )
+    )
+);
 
 export default {
     name: 'App',
@@ -12,7 +25,7 @@ export default {
         WorkshopRegistrationForm
     },
     provide: {
-        workshopService: new WorkshopService()
+        workshopService: workshopService
     }
 }
 </script>
