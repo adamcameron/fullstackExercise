@@ -44,6 +44,13 @@ form.workshopRegistration, dl.workshopRegistration {
     font-size: 90%;
 }
 
+.workshopRegistration aside {
+    float: right;
+    width: calc(100% - 200px);
+    padding: 0.7em;
+    margin-bottom: 0.5rem;
+}
+
 .workshopRegistration button {
     background: lightgrey;
     padding: 0.7em;
@@ -62,7 +69,7 @@ form.workshopRegistration, dl.workshopRegistration {
 </style>
 
 <template>
-    <form method="post" action="" class="workshopRegistration" v-if="registrationState !== REGISTRATION_STATE_SUMMARY">
+    <form method="post" action="" class="workshopRegistration" v-if="registrationState !== REGISTRATION_STATE_SUMMARY" novalidate="true">
         <fieldset :disabled="isFormDisabled">
             <label for="fullName" class="required">Full name:</label>
             <input type="text" name="fullName" required="required" maxlength="100" id="fullName" v-model="formValues.fullName">
@@ -76,10 +83,16 @@ form.workshopRegistration, dl.workshopRegistration {
             </select>
 
             <label for="emailAddress" class="required">Email address:</label>
-            <input type="text" name="emailAddress" required="required" maxlength="320" id="emailAddress" v-model="formValues.emailAddress" autocomplete="off">
+            <input type="email" name="emailAddress" required="required" maxlength="320" id="emailAddress" v-model="formValues.emailAddress" autocomplete="off">
 
             <label for="password" class="required">Password:</label>
-            <input type="password" name="password" required="required" maxlength="255" id="password" v-model="formValues.password" autocomplete="new-password">
+            <input @keyup="checkPassword" type="password" name="password" required="required" maxlength="255" id="password" v-model="formValues.password" autocomplete="new-password">
+
+            <aside class="passwordMessage" v-if="showPasswordMessage">
+                Password must be at least eight characters long
+                and must comprise at least one uppercase letter, one lowercase letter,
+                one digit, and one other non-alphanumeric character.
+            </aside>
 
             <button @click="processFormSubmission" :disabled="isFormUnready" v-html="submitButtonLabel"></button>
         </fieldset>
@@ -127,7 +140,8 @@ export default {
                 workshopsToAttend : [],
                 emailAddress : "",
                 password : ""
-            }
+            },
+            showPasswordMessage : false
         };
     },
     created() {
@@ -144,6 +158,9 @@ export default {
             this.registrationState = REGISTRATION_STATE_PROCESSING;
             this.summaryValues = await this.workshopService.saveWorkshopRegistration(this.formValues);
             this.registrationState = REGISTRATION_STATE_SUMMARY;
+        },
+        checkPassword() {
+            this.showPasswordMessage = !this.isPasswordValid;
         }
     },
     computed : {
@@ -152,16 +169,19 @@ export default {
                 || this.formValues.phoneNumber.length === 0
                 || this.formValues.workshopsToAttend.length === 0
                 || this.formValues.emailAddress.length === 0
-                || this.formValues.password.length === 0;
+                || !this.isPasswordValid;
 
             return unready;
         },
         isFormDisabled: function() {
-
             return this.registrationState !== REGISTRATION_STATE_FORM;
         },
         submitButtonLabel: function() {
             return this.registrationState === REGISTRATION_STATE_FORM ? "Register" : "Processing&hellip;";
+        },
+        isPasswordValid: function () {
+            const validPasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W)(?:.){8,}$");
+            return validPasswordPattern.test(this.formValues.password);
         }
     }
 }
