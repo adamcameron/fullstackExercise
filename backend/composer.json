@@ -85,6 +85,7 @@
             "rm -rf var/cache/test",
             "bin/console cache:clear --env=dev",
             "bin/console cache:clear --env=test",
+            "bin/console cache:clear --env=prod",
             "rm -rf /tmp/kahlan"
         ],
         "phpmd": "vendor/bin/phpmd src,tests text phpmd.xml",

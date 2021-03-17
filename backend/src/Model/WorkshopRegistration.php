@@ -6,14 +6,14 @@ class WorkshopRegistration
 {
     public string $fullName;
     public string $phoneNumber;
-    public string $workshopsToAttend;
+    public array $workshopsToAttend;
     public string $emailAddress;
     public string $password;
 
     public function __construct(
         string $fullName,
         string $phoneNumber,
-        string $workshopsToAttend,
+        array $workshopsToAttend,
         string $emailAddress,
         string $password
     ) {

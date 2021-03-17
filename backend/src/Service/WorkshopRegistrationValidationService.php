@@ -3,7 +3,6 @@
 namespace adamCameron\fullStackExercise\Service;
 
 use adamCameron\fullStackExercise\Exception\WorkshopRegistrationValidationException;
-use adamCameron\fullStackExercise\Model\WorkshopRegistration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,12 +17,11 @@ class WorkshopRegistrationValidationService
         $this->validator = $validator;
     }
 
-    public function validate(Request $request): WorkshopRegistration
+    public function validate(Request $request)
     {
         $content = $request->getContent();
-        $values = json_decode($content, true);
+        $values = json_decode($content, true) ?? []; // Symfony won't validate null (apparently by "design")
         $constraints = $this->getConstraints();
-
         $violations = $this->validator->validate($values, $constraints);
 
         if (count($violations) > 0) {
@@ -35,24 +33,39 @@ class WorkshopRegistrationValidationService
             }, $violations->getIterator()->getArrayCopy());
             throw new WorkshopRegistrationValidationException($errors);
         }
-
-        return new WorkshopRegistration(
-            $values['fullName'],
-            $values['phoneNumber'],
-            $values['workshopsToAttend'],
-            $values['emailAddress'],
-            $values['password']
-        );
     }
 
     private function getConstraints()
     {
         return new Assert\Collection([
-            'fullName' => new Assert\NotBlank(),
-            'phoneNumber' => new Assert\NotBlank(),
-            'workshopsToAttend' => new Assert\NotBlank(),
-            'emailAddress' => new Assert\NotBlank(),
-            'password' => new Assert\NotBlank()
+            'fields' => [
+                'fullName' => [
+                    new Assert\Length(['min' => 1, 'max' => 100]),
+                    new ContainsXssRiskConstraint()
+                ],
+                'phoneNumber' => [
+                    new Assert\Length(['min' => 1, 'max' => 50]),
+                    new ContainsXssRiskConstraint()
+                ],
+                'workshopsToAttend' => [
+                    new Assert\NotBlank(),
+                    new Assert\All([
+                        new Assert\Type('int')
+                    ])
+                ],
+                'emailAddress' => [
+                    new Assert\Length(['min' => 3, 'max' => 320]),
+                    new ContainsXssRiskConstraint()
+                ],
+                'password' => [
+                    new Assert\Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])(?:.){8,}$/',
+                        'message' => 'Failed complexity validation'
+                    ])
+                ]
+            ],
+            'allowMissingFields' => false,
+            'allowExtraFields' => true
         ]);
     }
 }
