@@ -18,7 +18,7 @@ class WorkshopRegistrationValidationService
         $this->validator = $validator;
     }
 
-    public function validate(Request $request): void
+    public function validate(Request $request): WorkshopRegistration
     {
         $content = $request->getContent();
         $values = json_decode($content, true);
@@ -27,8 +27,22 @@ class WorkshopRegistrationValidationService
         $violations = $this->validator->validate($values, $constraints);
 
         if (count($violations) > 0) {
-            throw new WorkshopRegistrationValidationException();
+            $errors = array_map(function ($violation) {
+                return [
+                    'field' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage()
+                ];
+            }, $violations->getIterator()->getArrayCopy());
+            throw new WorkshopRegistrationValidationException($errors);
         }
+
+        return new WorkshopRegistration(
+            $values['fullName'],
+            $values['phoneNumber'],
+            $values['workshopsToAttend'],
+            $values['emailAddress'],
+            $values['password']
+        );
     }
 
     private function getConstraints()

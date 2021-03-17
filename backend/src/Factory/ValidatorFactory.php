@@ -13,5 +13,3 @@ class ValidatorFactory
         return Validation::createValidatorBuilder()->getValidator();
     }
 }
-
-

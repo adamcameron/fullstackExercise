@@ -24,7 +24,7 @@ class WorkshopRegistrationsController extends AbstractController
         try {
             $this->validator->validate($request);
         } catch (WorkshopRegistrationValidationException $e) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['errors' => $e->getErrors()], Response::HTTP_BAD_REQUEST);
         }
         return new JsonResponse(null, Response::HTTP_CREATED);
     }
