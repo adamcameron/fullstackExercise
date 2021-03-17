@@ -26,6 +26,10 @@ services:
     adamCameron\fullStackExercise\Model\WorkshopCollection:
         factory: ['@adamCameron\fullStackExercise\Factory\WorkshopCollectionFactory', 'getWorkshopCollection']
 
+    adamCameron\fullStackExercise\Factory\ValidatorFactory: ~
+    Symfony\Component\Validator\Validator\ValidatorInterface:
+        factory: ['@adamCameron\fullStackExercise\Factory\ValidatorFactory', 'getValidator']
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     adamCameron\fullStackExercise\Controller\:

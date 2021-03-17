@@ -5,7 +5,14 @@
 greetings:
   path: /greetings/{name}
   controller: adamCameron\fullStackExercise\Controller\GreetingsController::doGet
+  methods: GET
 
 workshops:
   path: /workshops/
   controller: adamCameron\fullStackExercise\Controller\WorkshopsController::doGet
+  methods: GET
+
+workshop-registrations:
+  path: /workshop-registrations/
+  controller: adamCameron\fullStackExercise\Controller\WorkshopRegistrationsController::doPost
+  methods: POST

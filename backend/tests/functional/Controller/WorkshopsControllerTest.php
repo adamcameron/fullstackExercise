@@ -3,14 +3,15 @@
 namespace adamCameron\fullStackExercise\tests\functional\Controller;
 
 use adamCameron\fullStackExercise\DAO\WorkshopsDAO;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Response;
 
-/** @testdox Functional tests of WorkshopsController */
+/** @testdox Functional tests of /workshops/ endpoint */
 class WorkshopsControllerTest extends WebTestCase
 {
-    private $client;
+    private KernelBrowser $client;
 
     public static function setUpBeforeClass(): void
     {
@@ -24,7 +25,7 @@ class WorkshopsControllerTest extends WebTestCase
     }
 
     /**
-     * @testdox it needs to return a 200-OK status for GET requests
+     * @testdox it needs to return a 200-OK status for successful GET requests
      * @covers \adamCameron\fullStackExercise\Controller\WorkshopsController
      */
     public function testDoGetReturns200()
