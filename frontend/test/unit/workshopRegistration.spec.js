@@ -122,7 +122,8 @@ describe("Testing WorkshopRegistrationForm component", () => {
             {case: "must have at least one lowercase letter", password: "A_1!56789", valid: false},
             {case: "must have at least one uppercase letter", password: "_a1!56789", valid: false},
             {case: "must have at least one digit", password: "Aa_!efghi", valid: false},
-            {case: "must have at least one non-alphanumeric character", password: "Aa1x56789", valid: false}
+            {case: "must have at least one non-alphanumeric character", password: "Aa1x56789", valid: false},
+            {case: "can have underscore as the one non-alphanumeric character", password: "Aa1_56789", valid: true}
         ];
 
         examples.forEach((testCase) => {

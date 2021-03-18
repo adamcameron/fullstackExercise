@@ -180,7 +180,7 @@ export default {
             return this.registrationState === REGISTRATION_STATE_FORM ? "Register" : "Processing&hellip;";
         },
         isPasswordValid: function () {
-            const validPasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W)(?:.){8,}$");
+            const validPasswordPattern = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_])(?:.){8,}$");
             return validPasswordPattern.test(this.formValues.password);
         }
     }
