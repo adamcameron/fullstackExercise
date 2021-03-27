@@ -13,7 +13,6 @@ WORKDIR  /usr/share/fullstackExercise/
 COPY ./package.json .
 COPY ./package-lock.json .
 ENV NPM_CONFIG_CACHE=/var/cache/npm/
-RUN npm install -g @vue/cli
 RUN npm install
 EXPOSE 8080
 CMD ["npm", "run", "serve"]
