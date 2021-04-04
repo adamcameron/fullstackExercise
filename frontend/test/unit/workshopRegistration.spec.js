@@ -10,7 +10,9 @@ import {expect} from "chai";
 import sinon from "sinon";
 import flushPromises from "flush-promises";
 
-describe("Testing WorkshopRegistrationForm component", () => {
+describe("Testing WorkshopRegistrationForm component", function () {
+
+    this.timeout(10000);
 
     const TEST_INPUT_VALUE = "TEST_VALUE";
     const TEST_SELECT_VALUE = 5;
@@ -31,6 +33,7 @@ describe("Testing WorkshopRegistrationForm component", () => {
         sinon.stub(dao, "selectAll").returns(Promise.resolve(
             expectedOptions.map((option) => ({id: option.value, name: option.text}))
         ));
+
         workshopService = new WorkshopService(
             new WorkshopCollection(
                 new WorkshopsRepository(
@@ -39,7 +42,7 @@ describe("Testing WorkshopRegistrationForm component", () => {
             )
         );
 
-        component = await shallowMount(
+        component = shallowMount(
             WorkshopRegistrationForm,
             {
                 global : {
@@ -94,9 +97,10 @@ describe("Testing WorkshopRegistrationForm component", () => {
             expect(label.text(), `${name} field's label must have value '${labelText}'`).to.equal(`${labelText}:`);
         };
 
-        it("should list the workshop options fetched from the back-end", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should list the workshop options fetched from the back-end", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
+
                 let options = component.findAll("form.workshopRegistration select[name='workshopsToAttend[]']>option");
                 expect(options).to.have.length(expectedOptions.length);
                 options.forEach((option, i) => {
@@ -128,15 +132,18 @@ describe("Testing WorkshopRegistrationForm component", () => {
 
         examples.forEach((testCase) => {
             it(testCase.case, async () => {
-                await populateForm(testCase.password);
-                await flushPromises();
+                await component.vm.promisedWorkshops.then(async () => {
+                    await component.vm.$nextTick();
+                    await populateForm(testCase.password);
+                    await flushPromises();
 
-                let buttonDisabledAttribute = component.find("form.workshopRegistration button").attributes("disabled");
-                let failureMessage = `${testCase.password} should be ${testCase.valid ? "valid" : "invalid"}`;
+                    let buttonDisabledAttribute = component.find("form.workshopRegistration button").attributes("disabled");
+                    let failureMessage = `${testCase.password} should be ${testCase.valid ? "valid" : "invalid"}`;
 
-                testCase.valid
-                    ? expect(buttonDisabledAttribute, failureMessage).to.not.exist
-                    : expect(buttonDisabledAttribute, failureMessage).to.exist;
+                    testCase.valid
+                        ? expect(buttonDisabledAttribute, failureMessage).to.not.exist
+                        : expect(buttonDisabledAttribute, failureMessage).to.exist;
+                });
             });
         });
 
@@ -182,9 +189,9 @@ describe("Testing WorkshopRegistrationForm component", () => {
     });
 
     describe("Testing form submission", () => {
-        it("should leave the submit button disabled until the form is filled", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should leave the submit button disabled until the form is filled", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
                 let button = component.find("form.workshopRegistration button");
 
                 expect(button.attributes("disabled"), "button should be disabled before form is populated").to.exist;
@@ -194,9 +201,9 @@ describe("Testing WorkshopRegistrationForm component", () => {
             });
         });
 
-        it("should disable the form and indicate data is processing when the form is submitted", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should disable the form and indicate data is processing when the form is submitted", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
                 let lastLabel;
                 component.vm.$watch("submitButtonLabel", (newValue) => {
                     lastLabel = newValue;
@@ -214,9 +221,9 @@ describe("Testing WorkshopRegistrationForm component", () => {
             });
         });
 
-        it("should send the form values to WorkshopService.saveWorkshopRegistration when the form is submitted", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should send the form values to WorkshopService.saveWorkshopRegistration when the form is submitted", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
                 sinon.spy(workshopService, "saveWorkshopRegistration");
 
                 await submitPopulatedForm();
@@ -236,9 +243,11 @@ describe("Testing WorkshopRegistrationForm component", () => {
     });
 
     describe("Testing summary display", () => {
-        it("should display the registration summary 'template' after the registration has been submitted", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should display the registration summary 'template' after the registration has been submitted", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
+
+                sinon.stub(workshopService, "saveWorkshopRegistration").returns([]);
                 await submitPopulatedForm();
 
                 let summary = component.find("dl.workshopRegistration");
@@ -254,9 +263,10 @@ describe("Testing WorkshopRegistrationForm component", () => {
             });
         });
 
-        it("should display the summary values in the registration summary", () => {
-            component.vm.$watch("workshops", async () => {
-                await flushPromises();
+        it("should display the summary values in the registration summary", async () => {
+            await component.vm.promisedWorkshops.then(async () => {
+                await component.vm.$nextTick();
+
                 const summaryValues = {
                     registrationCode: "TEST_registrationCode",
                     fullName: "TEST_fullName",

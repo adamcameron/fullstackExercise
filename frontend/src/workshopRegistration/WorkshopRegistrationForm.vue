@@ -133,6 +133,7 @@ export default {
     data() {
         return {
             registrationState: REGISTRATION_STATE_FORM,
+            promisedWorkshops: null,
             workshops: [],
             formValues : {
                 fullName : "",
@@ -150,7 +151,8 @@ export default {
         this.REGISTRATION_STATE_SUMMARY = REGISTRATION_STATE_SUMMARY;
     },
     async mounted() {
-        this.workshops = await this.workshopService.getWorkshops();
+        this.promisedWorkshops = this.workshopService.getWorkshops();
+        this.workshops = await this.promisedWorkshops;
     },
     methods : {
         async processFormSubmission(event) {
